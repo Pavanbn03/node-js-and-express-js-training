@@ -4,7 +4,7 @@ const db = require("../models");
 const Joi = require("joi");
 
 const schema = Joi.object({
-  name: Joi.string().min(3),
+  name: Joi.string().required(),
   author: Joi.string().min(3),
   tags: Joi.array().items(Joi.string()),
   isPublished: Joi.bool(),

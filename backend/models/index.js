@@ -11,7 +11,7 @@ mongoose
   .catch((err) => console.log("Error", err));
 
 const courseSchema = new mongoose.Schema({
-  name: String,
+  name: { type: String, required: true, minlength: 5 },
   author: String,
   tags: [String],
   date: { type: Date, default: Date.now },
@@ -33,8 +33,12 @@ module.exports.createCourse = async (body) => {
     tags: tags,
     isPublished: isPublished,
   });
-  const data = await course.save();
-  return data;
+  try {
+    const data = await course.save();
+    return data;
+  } catch (err) {
+    return err;
+  }
 };
 
 module.exports.updateCourse = async (id, body) => {
@@ -44,6 +48,6 @@ module.exports.updateCourse = async (id, body) => {
   return data;
 };
 module.exports.removeCourse = async (id) => {
-  const data = await Course.findById({ _id: id });
+  const data = await Course.findByIdAndDelete(id);
   return data;
 };
