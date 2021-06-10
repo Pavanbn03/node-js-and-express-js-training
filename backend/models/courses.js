@@ -15,7 +15,7 @@ mongoose
 const courseSchema = new mongoose.Schema({
   name: { type: String, required: true, minlength: 5 },
   author: String,
-  tags: [String],
+  tags: String,
   date: { type: Date, default: Date.now },
   isPublished: Boolean,
 });
@@ -25,7 +25,7 @@ const Course = mongoose.model("Course", courseSchema);
 const schema = Joi.object({
   name: Joi.string().required(),
   author: Joi.string().min(3),
-  tags: Joi.array().items(Joi.string()),
+  tags: Joi.string(),
   isPublished: Joi.bool(),
 });
 
