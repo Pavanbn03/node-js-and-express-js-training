@@ -22,7 +22,7 @@ const PutCourse = (props) => {
       .then(() => {
         props.history.replace("/");
       })
-      .catch((err) => console.log("error", err));
+      .catch((err) => alert(err));
   };
 
   console.log(props);
