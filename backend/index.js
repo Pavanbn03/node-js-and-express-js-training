@@ -2,10 +2,13 @@ const express = require("express");
 const app = express();
 const courses = require("./routes/courses");
 const home = require("./routes/home");
+const helmet = require("helmet");
+const compression = require("compression");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
+app.use(helmet());
+app.use(compression());
 //Set headers for all incoming requests
 app.all("/*", (request, response, next) => {
   response.header("Access-Control-Allow-Origin", "*");
