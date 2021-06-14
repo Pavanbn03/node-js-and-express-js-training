@@ -1,4 +1,4 @@
-const { Course, schema } = require("../models");
+import { schema, Course } from "../models";
 
 module.exports.getCourse = async (req, res) => {
   try {
@@ -47,13 +47,11 @@ module.exports.updateCourse = async (req, res) => {
     return;
   }
 
-  //   const coursedb = await Course.findById(req.params.id);
-  //   coursedb.set({ ...req.body });
   try {
-    // const data = await coursedb.save();
     const result = await Course.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
+    await result.save();
     res.send(result);
   } catch (exp) {
     res.status(401).send(exp.message);

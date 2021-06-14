@@ -1,10 +1,21 @@
 import React from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import io from "socket.io-client";
+
+let socket;
+const SERVER = "localhost:5000";
 const Getcourse = (props) => {
   const [courses, setCourses] = React.useState([]);
+
   React.useEffect(() => {
     getCourse();
+
+    var socket = io(SERVER);
+    socket.on("connection", () => {
+      console.log(`I'm connected with the back-end`);
+    });
+    socket.on("update", (data) => console.log(data));
   }, []);
   const getCourse = () => {
     axios
@@ -18,7 +29,8 @@ const Getcourse = (props) => {
     axios
       .delete(`http://localhost:5000/api/courses/${id}`)
       .then(() => {
-        props.history.replace("/");
+        // props.history.replace("/");
+        window.location.reload();
       })
       .catch((err) => console.log("error", err));
   };
@@ -26,6 +38,7 @@ const Getcourse = (props) => {
   return (
     <div>
       <Link to="/create">Create</Link>
+      {console.log("course", courses)}
       {courses &&
         courses.map((course) => {
           return (

@@ -20,7 +20,18 @@ const courseSchema = new mongoose.Schema({
   isPublished: Boolean,
 });
 
+courseSchema.post("save", (data) => {
+  console.log(data);
+  var io = require("../index").io;
+  // console.log(io);
+  io.emit("update", data);
+});
+
 const Course = mongoose.model("Course", courseSchema);
+// mongoose.connection.on("connected", (err) => {
+//   console.log(err);
+//   Course.watch().on("change", (data) => console.log(data));
+// });
 
 const schema = Joi.object({
   name: Joi.string().required(),
@@ -29,5 +40,4 @@ const schema = Joi.object({
   isPublished: Joi.bool(),
 });
 
-exports.Course = Course;
-exports.schema = schema;
+export { Course, schema };
