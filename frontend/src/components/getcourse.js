@@ -3,15 +3,14 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import io from "socket.io-client";
 
-let socket;
 const SERVER = "localhost:5000";
+const socket = io(SERVER);
 const Getcourse = (props) => {
   const [courses, setCourses] = React.useState([]);
 
   React.useEffect(() => {
     getCourse();
 
-    var socket = io(SERVER);
     socket.on("connection", () => {
       console.log(`I'm connected with the back-end`);
     });
@@ -38,7 +37,7 @@ const Getcourse = (props) => {
   return (
     <div>
       <Link to="/create">Create</Link>
-      {console.log("course", courses)}
+
       {courses &&
         courses.map((course) => {
           return (
