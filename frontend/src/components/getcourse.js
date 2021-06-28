@@ -5,17 +5,27 @@ import io from "socket.io-client";
 
 const SERVER = "localhost:5000";
 const socket = io(SERVER);
+
 const Getcourse = (props) => {
   const [courses, setCourses] = React.useState([]);
+  const [recentUpdate, setRecentUpdate] = React.useState();
+
+  const update = (data) => {
+    debugger;
+    console.log(data);
+    localStorage.setItem("data", JSON.stringify(data));
+    // setRecentUpdate(data);
+  };
+
+  socket.on("update", update);
 
   React.useEffect(() => {
     getCourse();
-
-    socket.on("connection", () => {
-      console.log(`I'm connected with the back-end`);
-    });
-    socket.on("update", (data) => console.log(data));
+    // socket.on("update", (data) => {
+    //   console.log("data");
+    // });
   }, []);
+
   const getCourse = () => {
     axios
       .get("http://localhost:5000/api/courses")
@@ -24,11 +34,12 @@ const Getcourse = (props) => {
       })
       .catch((err) => console.log("error", err));
   };
+
   const deleteCourse = (id) => {
     axios
       .delete(`http://localhost:5000/api/courses/${id}`)
       .then(() => {
-        // props.history.replace("/");
+        props.history.replace("/");
         window.location.reload();
       })
       .catch((err) => console.log("error", err));
@@ -37,7 +48,6 @@ const Getcourse = (props) => {
   return (
     <div>
       <Link to="/create">Create</Link>
-
       {courses &&
         courses.map((course) => {
           return (
@@ -70,6 +80,10 @@ const Getcourse = (props) => {
             </details>
           );
         })}
+      <div>Recent Updates:</div>
+
+      <p>{JSON.parse(localStorage.getItem("data")).name || ""}</p>
+      {/* <p>Author : {recentUpdate.author || ""}</p> */}
     </div>
   );
 };

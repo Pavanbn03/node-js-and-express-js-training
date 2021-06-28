@@ -3,6 +3,7 @@ import Getcourse from "./components/getcourse";
 import PutCourse from "./components/putcourse";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Postcourse from "./components/postcourse";
+
 function App() {
   return (
     <Router>

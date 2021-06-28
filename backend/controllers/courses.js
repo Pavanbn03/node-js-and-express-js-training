@@ -5,10 +5,12 @@ module.exports.getCourse = async (req, res) => {
     if (req.params.id) {
       const course = await Course.findById(req.params.id);
 
-      course ? res.send(course) : res.status(404).send("Not found");
+      course ? res.status(200).send(course) : res.status(404).send("Not found");
     } else {
       const courses = await Course.find();
-      courses ? res.send(courses) : res.status(404).send("Not found");
+      courses
+        ? res.status(200).send(courses)
+        : res.status(404).send("Not found");
     }
   } catch (exp) {
     res.send(exp.message);
